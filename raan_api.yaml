@@ -1,0 +1,520 @@
+openapi: 3.0.0
+info:
+  version: 0.2.0
+  title: RAAN API
+  contact:
+    email: raan-software@garagemca.org
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: search
+  - name: person
+  - name: event
+  - name: document
+  - name: organisation
+  - name: keyword
+  - name: role
+  - name: kind
+  - name: language
+  - name: series
+  - name: subject_heading
+  - name: place
+  - name: collection
+
+paths:
+  /search:
+    get:
+      tags:
+        - search
+      summary: Returns search results
+      operationId: getSearchResults
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: search[query]
+          in: query
+          required: false
+          description: Search query
+          schema:
+            type: string
+        - name: filter[type]
+          in: query
+          required: false
+          description: Filtration by type
+          schema:
+            type: string
+            enum:
+              - event
+              - individual
+              - group
+              - organisation
+              - book
+        - name: sort
+          in: query
+          required: false
+          description: Sorting
+          schema:
+            type: string
+            enum:
+              - name
+              - name_en
+              - lastname
+              - firstname
+              - date_from
+              - date_to
+              - place.name
+              - place_of_death.name
+              - bio
+              - gnd
+              - inv_int
+              - created_at
+      responses:
+        "200":
+          description: successful operation
+
+  /person:
+    get:
+      tags:
+        - person
+      summary: Returns list of persons
+      operationId: getPersonList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[type]
+          in: query
+          required: false
+          description: Filtration by type
+          schema:
+            type: string
+            enum:
+              - individual
+              - group
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  "/person/{id}":
+    get:
+      tags:
+        - person
+      description: Returns person based on ID
+      summary: Find person by UUID
+      operationId: getPersonById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /event:
+    get:
+      tags:
+        - event
+      summary: Returns list of events
+      operationId: getEventList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  "/event/{id}":
+    get:
+      tags:
+        - event
+      description: Returns event based on ID
+      summary: Find event by UUID
+      operationId: getEventById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /document:
+    get:
+      tags:
+        - document
+      summary: Returns list of documents
+      operationId: getdocumentList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[type]
+          in: query
+          required: false
+          description: Filtration by type
+          schema:
+            type: string
+            enum:
+              - book
+              - periodical
+              - issue
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  "/document/{id}":
+    get:
+      tags:
+        - document
+      description: Returns document based on ID
+      summary: Find document by UUID
+      operationId: getdocumentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /organisation:
+    get:
+      tags:
+        - organisation
+      summary: Returns list of organisations
+      operationId: getorganisationList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  "/organisation/{id}":
+    get:
+      tags:
+        - organisation
+      description: Returns organisation based on ID
+      summary: Find organisation by UUID
+      operationId: getorganisationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /keyword:
+    get:
+      tags:
+        - keyword
+      summary: Returns list of keywords
+      operationId: getKeywordList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /role:
+    get:
+      tags:
+        - role
+      summary: Returns list of roles
+      operationId: getRoleList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[type]
+          in: query
+          required: false
+          description: Lookup by types
+          schema:
+            type: string
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /kind:
+    get:
+      tags:
+        - kind
+      summary: Returns list of kinds
+      operationId: getKindList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+        - name: filter[id][prefix]
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - event
+              - event.exhibition
+              - name
+              - document
+              - document.book
+              - document.archive_document
+      responses:
+        "200":
+          description: successful operation
+  /language:
+    get:
+      tags:
+        - language
+      summary: Returns list of languages
+      operationId: getLanguageList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /series:
+    get:
+      tags:
+        - series
+      summary: Returns list of book series
+      operationId: getSeriesList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /subject_heading:
+    get:
+      tags:
+        - subject_heading
+      summary: Returns list of subject headings
+      operationId: getSubjectHeadingList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /place:
+    get:
+      tags:
+        - place
+      summary: Returns list of places
+      operationId: getPlaceList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+  /collection:
+    get:
+      tags:
+        - collection
+      summary: Returns list of collections
+      operationId: getCollectionList
+      parameters:
+        - name: page[size]
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page[number]
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: filter[name][infix]
+          in: query
+          required: false
+          description: Lookup by name and name_en
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+
+servers:
+  - url: https://api.raan.garagemca.org/
+  - url: https://dev.api.raan.garagemca.org/
