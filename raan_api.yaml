@@ -114,6 +114,18 @@ paths:
               - group
               - organisation
               - book
+              - periodical
+              - issue
+              - archivedocument
+              - thing
+              - ephemeris
+              - video
+              - mediaitem
+              - audio
+              - image
+              - article
+              - place
+
         - name: sort
           in: query
           required: false
