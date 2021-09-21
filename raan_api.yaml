@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.2.0
+  version: 0.7.0
   title: RAAN API
   contact:
     name: raan-software@garagemca.org
@@ -67,14 +67,14 @@ tags:
   - name: event
   - name: document
   - name: organisation
+  - name: collection
   - name: keyword
-  - name: role
+  - name: place
   - name: kind
+  - name: role
   - name: language
   - name: series
   - name: subject_heading
-  - name: place
-  - name: collection
   - name: file
 
 paths:
@@ -102,29 +102,25 @@ paths:
           description: Search query
           schema:
             type: string
-        - name: filter[type]
+        - name: filter[kind][prefix]
           in: query
           required: false
-          description: Filtration by type
+          description: Filtration by kind. Call /kind to get more values.
           schema:
             type: string
             enum:
+              - person
+              - person.individual
+              - person.group
               - event
-              - individual
-              - group
+              - event.exhibition.solo
+              - event.exhibition.collective
+              - document
+              - document.archive_document
+              - document.audio
+              - document.book
+              - document.book.catalogue
               - organisation
-              - book
-              - periodical
-              - issue
-              - archivedocument
-              - thing
-              - ephemeris
-              - video
-              - mediaitem
-              - audio
-              - image
-              - article
-              - place
 
         - name: sort
           in: query
@@ -167,15 +163,15 @@ paths:
           required: false
           schema:
             type: integer
-        - name: filter[type]
+        - name: filter[kind][prefix]
           in: query
           required: false
-          description: Filtration by type
+          description: Filtration by kind
           schema:
             type: string
             enum:
-              - individual
-              - group
+              - person.individual
+              - person.group
         - name: filter[name][infix]
           in: query
           required: false
@@ -262,16 +258,24 @@ paths:
           required: false
           schema:
             type: integer
-        - name: filter[type]
+        - name: filter[kind][prefix]
           in: query
           required: false
-          description: Filtration by type
+          description: Filtration by kind
           schema:
             type: string
             enum:
-              - book
-              - periodical
-              - issue
+              - document.article
+              - document.book
+              - document.periodical
+              - document.issue
+              - document.image
+              - document.ephemeris
+              - document.media_item
+              - document.video
+              - document.audio
+              - document.archive_document
+              - document.thing
         - name: filter[name][infix]
           in: query
           required: false
